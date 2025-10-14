@@ -1,4 +1,4 @@
-                                                                       InvoiceApp Sistema de Reconocimiento Inteligente de Facturas
+                                       InvoiceApp Sistema de Reconocimiento Inteligente de Facturas
 
 InvoiceApp es una aplicación web desarrollada en Django y Python diseñada específicamente para empresas del sector sanitario. El sistema permite automatizar el procesamiento de facturas mediante inteligencia artificial, reconociendo automáticamente productos sanitarios como lavabos, duchas y sanitarios.
 

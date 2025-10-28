@@ -4,6 +4,9 @@ from .models import Client
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ['name', 'email', 'phone', 'address']
+        fields = ['nombre', 'email', 'telefono', 'direccion', 'tipo', 'activo']
         
-    # Añadiremos validaciones personalizadas después
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'

@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Invoice
 from .forms import InvoiceForm
@@ -25,4 +25,10 @@ class InvoiceUpdateView(UpdateView):
     model = Invoice
     form_class = InvoiceForm
     template_name = 'invoices/invoice_form.html'
+    success_url = reverse_lazy('invoices:invoice_list')
+
+# Eliminar factura
+class InvoiceDeleteView(DeleteView):
+    model = Invoice
+    template_name = 'invoices/invoice_confirm_delete.html'
     success_url = reverse_lazy('invoices:invoice_list')

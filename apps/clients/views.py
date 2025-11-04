@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Client
 from .forms import ClientForm
@@ -25,4 +25,10 @@ class ClientUpdateView(UpdateView):
     model = Client
     form_class = ClientForm
     template_name = 'clients/client_form.html'
+    success_url = reverse_lazy('clients:client_list')
+
+# Eliminar cliente
+class ClientDeleteView(DeleteView):
+    model = Client
+    template_name = 'clients/client_confirm_delete.html'
     success_url = reverse_lazy('clients:client_list')

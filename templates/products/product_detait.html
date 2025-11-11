@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Producto - InvoiceApp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📦 Detalle de Producto</h1>
+    <div>
+        <a href="{% url 'products:product_edit' product.id %}" class="btn btn-warning">✏️ Editar</a>
+        <a href="{% url 'products:product_list' %}" class="btn btn-primary">← Volver a la lista</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Información del Producto</h5>
+                <p><strong>Nombre:</strong> {{ product.nombre }}</p>  {# name → nombre #}
+                <p><strong>Código:</strong> {{ product.codigo }}</p>  {# sku → codigo #}
+                <p><strong>Tipo:</strong> {{ product.get_tipo_display }}</p>  {# product_type → tipo #}
+            </div>
+            <div class="col-md-6">
+                <h5>Precio y Stock</h5>
+                <p><strong>Precio:</strong> €{{ product.precio }}</p>  {# price → precio #}
+                <p><strong>Stock:</strong> {{ product.stock }} unidades</p>
+                <p><strong>Estado:</strong> 
+                    <span class="badge bg-{% if product.activo %}success{% else %}danger{% endif %}">
+                        {{ product.activo|yesno:"Activo,Inactivo" }}  {# is_active → activo #}
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        {% if product.descripcion %}  {# description → descripcion #}
+        <div class="mt-4">
+            <h5>Descripción</h5>
+            <p>{{ product.descripcion|linebreaks }}</p>  {# description → descripcion #}
+        </div>
+        {% endif %}
+        
+        <div class="mt-4">
+            <p><strong>Fecha de creación:</strong> {{ product.fecha_creacion|date:"d/m/Y H:i" }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

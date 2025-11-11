@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Factura - InvoiceApp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>🧾 Factura {{ invoice.numero }}</h1>  {# invoice_number → numero #}
+    <div>
+        <a href="{% url 'invoices:invoice_edit' invoice.id %}" class="btn btn-warning">✏️ Editar</a>
+        <a href="{% url 'invoices:invoice_list' %}" class="btn btn-primary">← Volver a la lista</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5>Información de la Factura</h5>
+                <p><strong>Cliente:</strong> {{ invoice.cliente.nombre }}</p>  {# client → cliente, name → nombre #}
+                <p><strong>Fecha:</strong> {{ invoice.fecha|date:"d/m/Y" }}</p>  {# invoice_date → fecha #}
+                <p><strong>Vencimiento:</strong> {{ invoice.vencimiento|date:"d/m/Y" }}</p>  {# due_date → vencimiento #}
+            </div>
+            <div class="col-md-6">
+                <h5>Estado y Totales</h5>
+                <p><strong>Estado:</strong> 
+                    <span class="badge 
+                        {% if invoice.estado == 'pagada' %}bg-success
+                        {% elif invoice.estado == 'enviada' %}bg-warning
+                        {% elif invoice.estado == 'borrador' %}bg-secondary
+                        {% else %}bg-danger{% endif %}">
+                        {{ invoice.get_estado_display }}  {# status → estado #}
+                    </span>
+                </p>
+                <p><strong>Subtotal:</strong> €{{ invoice.subtotal }}</p>  {# $ → € #}
+                <p><strong>IVA:</strong> €{{ invoice.iva }}</p>  {# tax_amount → iva #}
+                <p><strong>Total:</strong> <strong class="h5 text-primary">€{{ invoice.total }}</strong></p>  {# $ → € #}
+            </div>
+        </div>
+
+        <h5>Items de la Factura</h5>
+        {% if invoice.items.all %}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in invoice.items.all %}
+                    <tr>
+                        <td>{{ item.producto.nombre }}</td>  {# product → producto, name → nombre #}
+                        <td>{{ item.producto.descripcion|default:"-"|truncatewords:10 }}</td>  {# product → producto, description → descripcion #}
+                        <td>{{ item.cantidad }}</td>  {# quantity → cantidad #}
+                        <td>€{{ item.precio_unitario }}</td>  {# unit_price → precio_unitario, $ → € #}
+                        <td><strong>€{{ item.precio_total }}</strong></td>  {# total_price → precio_total, $ → € #}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="table-active">
+                        <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                        <td><strong>€{{ invoice.total }}</strong></td>  {# $ → € #}
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No hay items en esta factura.</p>
+        {% endif %}
+        
+        <div class="mt-4">
+            <p><strong>Fecha de creación:</strong> {{ invoice.fecha_creacion|date:"d/m/Y H:i" }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

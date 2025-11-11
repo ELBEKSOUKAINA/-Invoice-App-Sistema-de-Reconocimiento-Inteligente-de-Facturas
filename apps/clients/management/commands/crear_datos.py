@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 from apps.clients.models import Client
 from apps.products.models import Product
 from apps.invoices.models import Invoice, InvoiceItem
@@ -7,7 +8,7 @@ class Command(BaseCommand):
     help = 'Crear datos de prueba simples'
 
     def handle(self, *args, **options):
-        print("Creando datos de prueba...")
+        print(" Creando datos de prueba...")
         
         # Crear 2 clientes
         c1 = Client.objects.create(
@@ -33,12 +34,13 @@ class Command(BaseCommand):
             precio=50.00
         )
         
-        # Crear 1 factura con formato de fecha español
+        # Crear 1 factura con objetos date
+        from datetime import date
         factura = Invoice.objects.create(
             numero="FACT-300",
             cliente=c1,
-            fecha="2024-01-20",  # Django maneja el formato internamente
-            vencimiento="2024-02-20",
+            fecha=date(2024, 1, 20), 
+            vencimiento=date(2024, 2, 20),
             total=150.00,
             estado="pagada"
         )
